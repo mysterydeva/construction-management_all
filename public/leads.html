@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leads - UPVC Windows & Doors</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --success-color: #1cc88a;
+            --info-color: #36b9cc;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-color: #f8f9fc;
+            --dark-color: #5a5c69;
+        }
+        
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-color);
+        }
+        
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1cc88a 10%, #13855c 100%);
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 1rem 1.5rem;
+            border-radius: 0.35rem;
+            margin: 0.25rem 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 0.5rem;
+        }
+        
+        .topbar {
+            background-color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            padding: 1rem 1.5rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #e3e6f0;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .metric-card {
+            border-left: 0.25rem solid;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+        }
+        
+        .metric-card.primary { border-left-color: var(--primary-color); }
+        .metric-card.success { border-left-color: var(--success-color); }
+        .metric-card.info { border-left-color: var(--info-color); }
+        .metric-card.warning { border-left-color: var(--warning-color); }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2e59d9;
+            border-color: #2653d4;
+        }
+        
+        .table {
+            background-color: white;
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: var(--dark-color);
+            background-color: #f8f9fc;
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: ">";
+            color: var(--secondary-color);
+        }
+        
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-spinner.show {
+            display: flex;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--secondary-color);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner-border text-light" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <div class="text-center mb-4">
+                        <h5 class="text-white fw-bold">UPVC Windows & Doors</h5>
+                        <small class="text-white-50">UPVC Business</small>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="demo-upvc-modern.html">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="leads.html">
+                                <i class="bi bi-person-plus"></i> Leads
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="quotations.html">
+                                <i class="bi bi-file-text"></i> Quotations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="invoices.html">
+                                <i class="bi bi-file-earmark-text"></i> Invoices
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="expenses.html">
+                                <i class="bi bi-cash-stack"></i> Expenses
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <hr class="sidebar-divider">
+                    
+                    <div class="text-center">
+                        <a href="#" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <!-- Topbar -->
+                <div class="topbar d-flex justify-content-between align-items-center">
+                    <div>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="demo-upvc-modern.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Leads</li>
+                            </ol>
+                        </nav>
+                        <h1 class="h3 mb-0 text-gray-800">Leads</h1>
+                    </div>
+                    <div class="dropdown">
+                        <a class="btn btn-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                            Sarah Johnson
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Metrics Row -->
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card metric-card primary h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Leads</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-person-plus fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card metric-card success h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Converted</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-check-circle fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card metric-card warning h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">In Progress</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">4</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-hourglass-split fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card metric-card danger h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Lost</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">1</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="bi bi-x-circle fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leads Table -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">All Leads</h6>
+                        <button class="btn btn-primary btn-sm" onclick="showCreateForm()">
+                            <i class="bi bi-plus-circle me-2"></i>New Lead
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <!-- Search and Filter Bar -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Search leads..." id="searchInput">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="sourceFilter">
+                                    <option value="">All Sources</option>
+                                    <option value="Website">Website</option>
+                                    <option value="Referral">Referral</option>
+                                    <option value="Cold Call">Cold Call</option>
+                                    <option value="Social Media">Social Media</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="New">New</option>
+                                    <option value="Contacted">Contacted</option>
+                                    <option value="Qualified">Qualified</option>
+                                    <option value="Converted">Converted</option>
+                                    <option value="Lost">Lost</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-secondary" onclick="clearFilters()">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Contact</th>
+                                        <th>Source</th>
+                                        <th>Budget</th>
+                                        <th>Status</th>
+                                        <th>Created Date</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leadsTable">
+                                    <tr>
+                                        <td>Rahul Sharma</td>
+                                        <td>9876543210</td>
+                                        <td>Website</td>
+                                        <td class="text-end">₹45,000</td>
+                                        <td><span class="badge bg-success">Converted</span></td>
+                                        <td>2024-02-15</td>
+                                        <td class="text-end">
+                                            <div class="btn-group" role="group">
+                                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="viewLead('Rahul Sharma')">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-warning" onclick="editLead('Rahul Sharma')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('Rahul Sharma')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Priya Patel</td>
+                                        <td>9876543211</td>
+                                        <td>Referral</td>
+                                        <td class="text-end">₹38,500</td>
+                                        <td><span class="badge bg-warning">Qualified</span></td>
+                                        <td>2024-02-14</td>
+                                        <td class="text-end">
+                                            <div class="btn-group" role="group">
+                                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="viewLead('Priya Patel')">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-warning" onclick="editLead('Priya Patel')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('Priya Patel')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amit Kumar</td>
+                                        <td>9876543212</td>
+                                        <td>Cold Call</td>
+                                        <td class="text-end">₹52,000</td>
+                                        <td><span class="badge bg-warning">Contacted</span></td>
+                                        <td>2024-02-13</td>
+                                        <td class="text-end">
+                                            <div class="btn-group" role="group">
+                                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="viewLead('Amit Kumar')">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-warning" onclick="editLead('Amit Kumar')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('Amit Kumar')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Neha Singh</td>
+                                        <td>9876543213</td>
+                                        <td>Social Media</td>
+                                        <td class="text-end">₹28,000</td>
+                                        <td><span class="badge bg-warning">Contacted</span></td>
+                                        <td>2024-02-12</td>
+                                        <td class="text-end">
+                                            <div class="btn-group" role="group">
+                                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="viewLead('Neha Singh')">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-warning" onclick="editLead('Neha Singh')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('Neha Singh')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vikram Reddy</td>
+                                        <td>9876543214</td>
+                                        <td>Website</td>
+                                        <td class="text-end">₹65,000</td>
+                                        <td><span class="badge bg-success">Converted</span></td>
+                                        <td>2024-02-11</td>
+                                        <td class="text-end">
+                                            <div class="btn-group" role="group">
+                                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="viewLead('Vikram Reddy')">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-warning" onclick="editLead('Vikram Reddy')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('Vikram Reddy')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Anjali Gupta</td>
+                                        <td>9876543215</td>
+                                        <td>Referral</td>
+                                        <td class="text-end">₹42,000</td>
+                                        <td><span class="badge bg-warning">Qualified</span></td>
+                                        <td>2024-02-10</td>
+                                        <td class="text-end">
+                                            <div class="btn-group" role="group">
+                                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="viewLead('Anjali Gupta')">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-warning" onclick="editLead('Anjali Gupta')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('Anjali Gupta')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rajesh Kumar</td>
+                                        <td>9876543216</td>
+                                        <td>Cold Call</td>
+                                        <td class="text-end">₹35,000</td>
+                                        <td><span class="badge bg-warning">Contacted</span></td>
+                                        <td>2024-02-09</td>
+                                        <td class="text-end">
+                                            <div class="btn-group" role="group">
+                                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="viewLead('Rajesh Kumar')">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-warning" onclick="editLead('Rajesh Kumar')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('Rajesh Kumar')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kavita Desai</td>
+                                        <td>9876543217</td>
+                                        <td>Social Media</td>
+                                        <td class="text-end">₹18,000</td>
+                                        <td><span class="badge bg-danger">Lost</span></td>
+                                        <td>2024-02-08</td>
+                                        <td class="text-end">
+                                            <div class="btn-group" role="group">
+                                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="viewLead('Kavita Desai')">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm btn-outline-warning" onclick="editLead('Kavita Desai')">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('Kavita Desai')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <nav aria-label="Leads pagination">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <div class="modal fade" id="leadModal" tabindex="-1" aria-labelledby="leadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="leadModalLabel">New Lead</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="leadForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="leadName" class="form-label">Lead Name</label>
+                                <input type="text" class="form-control" id="leadName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="source" class="form-label">Source</label>
+                                <select class="form-select" id="source" required>
+                                    <option value="">Select Source</option>
+                                    <option value="Website">Website</option>
+                                    <option value="Referral">Referral</option>
+                                    <option value="Cold Call">Cold Call</option>
+                                    <option value="Social Media">Social Media</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" required>
+                                    <option value="New">New</option>
+                                    <option value="Contacted">Contacted</option>
+                                    <option value="Qualified">Qualified</option>
+                                    <option value="Converted">Converted</option>
+                                    <option value="Lost">Lost</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="budget" class="form-label">Budget (₹)</label>
+                                <input type="number" class="form-control" id="budget" min="0">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="projectType" class="form-label">Project Type</label>
+                                <input type="text" class="form-control" id="projectType">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="notes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveLead()">Save Lead</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete "<span id="deleteItemName"></span>"? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteItem()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            filterLeads();
+        });
+
+        // Filter functionality
+        document.getElementById('sourceFilter').addEventListener('change', filterLeads);
+        document.getElementById('statusFilter').addEventListener('change', filterLeads);
+
+        function filterLeads() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sourceFilter = document.getElementById('sourceFilter').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+            const rows = document.querySelectorAll('#leadsTable tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const matchesSearch = text.includes(searchTerm);
+                const matchesSource = !sourceFilter || text.includes(sourceFilter);
+                const matchesStatus = !statusFilter || text.includes(statusFilter);
+                
+                row.style.display = matchesSearch && matchesSource && matchesStatus ? '' : 'none';
+            });
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('sourceFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            filterLeads();
+        }
+
+        // Create/Edit functionality
+        function showCreateForm() {
+            document.getElementById('leadModalLabel').textContent = 'New Lead';
+            document.getElementById('leadForm').reset();
+            const modal = new bootstrap.Modal(document.getElementById('leadModal'));
+            modal.show();
+        }
+        
+        function editLead(leadName) {
+            document.getElementById('leadModalLabel').textContent = 'Edit Lead';
+            // Load lead data (for demo, just show modal)
+            const modal = new bootstrap.Modal(document.getElementById('leadModal'));
+            modal.show();
+        }
+        
+        function viewLead(leadName) {
+            showAlert(`Viewing lead: ${leadName}`, 'info');
+        }
+        
+        function saveLead() {
+            const form = document.getElementById('leadForm');
+            if (form.checkValidity()) {
+                document.getElementById('loadingSpinner').classList.add('show');
+                
+                setTimeout(() => {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('leadModal'));
+                    modal.hide();
+                    
+                    showAlert('Lead saved successfully!', 'success');
+                    document.getElementById('loadingSpinner').classList.remove('show');
+                    
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }, 1000);
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Delete confirmation
+        let itemToDelete = null;
+        
+        function confirmDelete(itemName) {
+            itemToDelete = itemName;
+            document.getElementById('deleteItemName').textContent = itemName;
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        }
+        
+        function deleteItem() {
+            if (itemToDelete) {
+                document.getElementById('loadingSpinner').classList.add('show');
+                
+                setTimeout(() => {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                    modal.hide();
+                    
+                    showAlert('Lead deleted successfully!', 'success');
+                    document.getElementById('loadingSpinner').classList.remove('show');
+                    
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }, 1000);
+            }
+        }
+        
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
+            alertDiv.innerHTML = `
+                <i class="bi bi-check-circle me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            const mainContent = document.querySelector('main');
+            mainContent.insertBefore(alertDiv, mainContent.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multi-Business ERP - Professional Demo</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #858796;
+            --success-color: #1cc88a;
+            --info-color: #36b9cc;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-color: #f8f9fc;
+            --dark-color: #5a5c69;
+        }
+        
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .hero-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+        
+        .business-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .business-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .business-card .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+            color: white;
+            border: none;
+            padding: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .business-card.construction .card-header {
+            background: linear-gradient(135deg, #4e73df, #224abe);
+        }
+        
+        .business-card.upvc .card-header {
+            background: linear-gradient(135deg, #1cc88a, #13855c);
+        }
+        
+        .business-card.interior .card-header {
+            background: linear-gradient(135deg, #f6c23e, #dda20a);
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list i {
+            color: var(--success-color);
+            margin-right: 0.5rem;
+        }
+        
+        .demo-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero-card">
+            <div class="text-center mb-5">
+                <div class="logo mb-3">
+                    <i class="bi bi-building"></i>
+                </div>
+                <h1 class="hero-title">Multi-Business ERP System</h1>
+                <p class="hero-subtitle">Professional Demo - Three Business Types, One Unified Platform</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Construction Business -->
+                <div class="col-md-4">
+                    <div class="business-card construction">
+                        <div class="card-header">
+                            <i class="bi bi-building me-2"></i>BuildRight Construction
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Construction Management</h5>
+                            <p class="text-muted">Complete project and inventory management for construction companies.</p>
+                            
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle"></i> Project Tracking</li>
+                                <li><i class="bi bi-check-circle"></i> Inventory Management</li>
+                                <li><i class="bi bi-check-circle"></i> Expense Tracking</li>
+                                <li><i class="bi bi-check-circle"></i> Profit Analysis</li>
+                                <li><i class="bi bi-check-circle"></i> Resource Planning</li>
+                            </ul>
+                            
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="modern-dashboard.html" class="btn btn-primary demo-btn">
+                                    <i class="bi bi-eye me-2"></i>View Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- UPVC Business -->
+                <div class="col-md-4">
+                    <div class="business-card upvc">
+                        <div class="card-header">
+                            <i class="bi bi-window me-2"></i>UPVC Windows & Doors
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Sales & Lead Management</h5>
+                            <p class="text-muted">Complete lead-to-sale pipeline for UPVC manufacturers and installers.</p>
+                            
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle"></i> Lead Management</li>
+                                <li><i class="bi bi-check-circle"></i> Quotation System</li>
+                                <li><i class="bi bi-check-circle"></i> Sales Tracking</li>
+                                <li><i class="bi bi-check-circle"></i> Customer Management</li>
+                                <li><i class="bi bi-check-circle"></i> Commission Tracking</li>
+                            </ul>
+                            
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="demo-upvc-modern.html" class="btn btn-success demo-btn">
+                                    <i class="bi bi-eye me-2"></i>View Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Interior Business -->
+                <div class="col-md-4">
+                    <div class="business-card interior">
+                        <div class="card-header">
+                            <i class="bi bi-palette me-2"></i>Elegant Interior Designs
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Design Project Management</h5>
+                            <p class="text-muted">Complete project management for interior design and decoration services.</p>
+                            
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle"></i> Project Portfolio</li>
+                                <li><i class="bi bi-check-circle"></i> Client Management</li>
+                                <li><i class="bi bi-check-circle"></i> Revenue Tracking</li>
+                                <li><i class="bi bi-check-circle"></i> Margin Analysis</li>
+                                <li><i class="bi bi-check-circle"></i> Design Gallery</li>
+                            </ul>
+                            
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="demo-interior-modern.html" class="btn btn-warning demo-btn">
+                                    <i class="bi bi-eye me-2"></i>View Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="bi bi-shield-check text-success" style="font-size: 3rem;"></i>
+                            <h5 class="mt-3">Secure & Reliable</h5>
+                            <p class="text-muted">Enterprise-grade security with role-based access control</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="bi bi-graph-up text-primary" style="font-size: 3rem;"></i>
+                            <h5 class="mt-3">Real-time Analytics</h5>
+                            <p class="text-muted">Comprehensive dashboards with interactive charts</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="bi bi-phone text-info" style="font-size: 3rem;"></i>
+                            <h5 class="mt-3">Mobile Responsive</h5>
+                            <p class="text-muted">Access your business from any device, anywhere</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <p class="text-muted">
+                    <i class="bi bi-info-circle me-2"></i>
+                    This is a demonstration of a multi-business ERP system. Each business type has its own specialized features and dashboard.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
