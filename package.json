@@ -3,8 +3,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite"
+        "build": "vite build --outDir=public/dist",
+        "dev": "vite",
+        "build:production": "npm run build && cp -r public/* public/dist/ || true"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
