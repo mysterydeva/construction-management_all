@@ -2,25 +2,29 @@
 
 namespace App\Models;
 
+use App\Traits\HasBusinessType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, HasBusinessType;
 
     protected $fillable = [
-        'business_id',
-        'client_name',
-        'project_name',
-        'estimated_cost',
-        'actual_cost',
+        'name',
+        'client',
+        'type',
         'status',
+        'start_date',
+        'end_date',
+        'budget',
+        'description',
     ];
 
     protected $casts = [
-        'estimated_cost' => 'decimal:2',
-        'actual_cost' => 'decimal:2',
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'budget' => 'decimal:2',
     ];
 
     public function business()

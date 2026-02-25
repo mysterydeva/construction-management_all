@@ -1,7 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.unified')
 
-@section('title', 'Create Project')
-@section('header', 'Create New Project')
+@section('title', 'Create Project - Multi-Business ERP')
+
+@section('page-title', 'Create Project')
 
 @section('content')
 <div class="row justify-content-center">

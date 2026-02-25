@@ -15,8 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // Replace CSRF middleware with custom one that does nothing
         $middleware->replace(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class, \App\Http\Middleware\DisableCsrf::class);
         
-        // Add Demo Mode middleware for auto-login
+        // Add Business Type middleware first
         $middleware->web(append: [
+            \App\Http\Middleware\BusinessTypeMiddleware::class,
             \App\Http\Middleware\DemoMode::class,
         ]);
         
