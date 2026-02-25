@@ -1,8 +1,7 @@
 <?php
 
 // Vercel serverless entry point for Laravel
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
+require __DIR__ . '/../vendor/autoload.php';
 
 // Set required server variables for Vercel
 $_SERVER['SCRIPT_NAME'] = '/index.php';
@@ -27,59 +26,18 @@ $_ENV['SESSION_DRIVER'] = 'array';
 $_ENV['QUEUE_CONNECTION'] = 'sync';
 $_ENV['LOG_CHANNEL'] = 'errorlog';
 
-// Create temporary directories if they don't exist
-if (!is_dir('/tmp')) {
-    mkdir('/tmp', 0755, true);
-}
-if (!is_dir('/tmp/storage')) {
-    mkdir('/tmp/storage', 0755, true);
-}
-if (!is_dir('/tmp/storage/framework')) {
-    mkdir('/tmp/storage/framework', 0755, true);
-}
-if (!is_dir('/tmp/storage/framework/views')) {
-    mkdir('/tmp/storage/framework/views', 0755, true);
-}
-
-// Set working directory to Laravel root
-chdir(__DIR__ . '/..');
-
-// Load Laravel autoloader and bootstrap the application
-require __DIR__ . '/../vendor/autoload.php';
-
-// Create the Laravel application instance
+// Bootstrap Laravel application
 $app = require_once __DIR__ . '/../bootstrap/app.php';
 
-// Handle the request through Laravel's HTTP kernel
-try {
-    $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-    
-    $response = $kernel->handle(
-        $request = Illuminate\Http\Request::capture()
-    )->send();
-    
-    $kernel->terminate($request, $response);
-    
-} catch (Exception $e) {
-    // Return error response for debugging
-    http_response_code(500);
-    header('Content-Type: application/json');
-    echo json_encode([
-        'error' => 'Laravel request failed',
-        'message' => $e->getMessage(),
-        'file' => $e->getFile(),
-        'line' => $e->getLine(),
-        'trace' => $e->getTraceAsString()
-    ]);
-} catch (Error $e) {
-    // Return error response for debugging
-    http_response_code(500);
-    header('Content-Type: application/json');
-    echo json_encode([
-        'error' => 'Laravel request error',
-        'message' => $e->getMessage(),
-        'file' => $e->getFile(),
-        'line' => $e->getLine(),
-        'trace' => $e->getTraceAsString()
-    ]);
-}
+// Handle the HTTP request
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
+
+// Send the response
+$response->send();
+
+// Terminate the request
+$kernel->terminate($request, $response);
