@@ -1,6 +1,6 @@
 <?php
 
-// Simple Vercel serverless entry point for Laravel
+// Vercel serverless entry point for Laravel
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
@@ -19,6 +19,9 @@ $appUrl = 'https://' . ($_SERVER['HTTP_HOST'] ?? 'localhost');
 $_ENV['APP_URL'] = $appUrl;
 
 // Configure Laravel for Vercel read-only environment
+$_ENV['APP_ENV'] = 'production';
+$_ENV['APP_DEBUG'] = 'false';
+$_ENV['APP_KEY'] = 'base64:iSg0UaHPigja2vpubkQgEHEIbWJmIF8lv1Ba2rC5VkM=';
 $_ENV['CACHE_DRIVER'] = 'array';
 $_ENV['SESSION_DRIVER'] = 'array';
 $_ENV['QUEUE_CONNECTION'] = 'sync';
@@ -40,15 +43,28 @@ if (!is_dir('/tmp/storage/framework/views')) {
     mkdir('/tmp/storage/framework/views', 0755, true);
 }
 
-// Try to load Laravel with error handling
+// Load Laravel autoloader and bootstrap the application
+require __DIR__ . '/../vendor/autoload.php';
+
+// Create the Laravel application instance
+$app = require_once __DIR__ . '/../bootstrap/app.php';
+
+// Handle the request through Laravel's HTTP kernel
 try {
-    require __DIR__ . '/../public/index.php';
+    $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+    
+    $response = $kernel->handle(
+        $request = Illuminate\Http\Request::capture()
+    )->send();
+    
+    $kernel->terminate($request, $response);
+    
 } catch (Exception $e) {
     // Return error response for debugging
     http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode([
-        'error' => 'Laravel bootstrap failed',
+        'error' => 'Laravel request failed',
         'message' => $e->getMessage(),
         'file' => $e->getFile(),
         'line' => $e->getLine(),
@@ -59,7 +75,7 @@ try {
     http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode([
-        'error' => 'Laravel bootstrap error',
+        'error' => 'Laravel request error',
         'message' => $e->getMessage(),
         'file' => $e->getFile(),
         'line' => $e->getLine(),
