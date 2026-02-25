@@ -26,8 +26,6 @@ $_ENV['CACHE_DRIVER'] = 'array';
 $_ENV['SESSION_DRIVER'] = 'array';
 $_ENV['QUEUE_CONNECTION'] = 'sync';
 $_ENV['LOG_CHANNEL'] = 'errorlog';
-$_ENV['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
-$_ENV['APP_STORAGE_PATH'] = '/tmp/storage';
 
 // Create temporary directories if they don't exist
 if (!is_dir('/tmp')) {
@@ -46,15 +44,28 @@ if (!is_dir('/tmp/storage/framework/views')) {
 // Set working directory to Laravel root
 chdir(__DIR__ . '/..');
 
-// Load Laravel's public/index.php directly
+// Load Laravel autoloader and bootstrap the application
+require __DIR__ . '/../vendor/autoload.php';
+
+// Create the Laravel application instance
+$app = require_once __DIR__ . '/../bootstrap/app.php';
+
+// Handle the request through Laravel's HTTP kernel
 try {
-    require __DIR__ . '/../public/index.php';
+    $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+    
+    $response = $kernel->handle(
+        $request = Illuminate\Http\Request::capture()
+    )->send();
+    
+    $kernel->terminate($request, $response);
+    
 } catch (Exception $e) {
     // Return error response for debugging
     http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode([
-        'error' => 'Laravel bootstrap failed',
+        'error' => 'Laravel request failed',
         'message' => $e->getMessage(),
         'file' => $e->getFile(),
         'line' => $e->getLine(),
@@ -65,7 +76,7 @@ try {
     http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode([
-        'error' => 'Laravel bootstrap error',
+        'error' => 'Laravel request error',
         'message' => $e->getMessage(),
         'file' => $e->getFile(),
         'line' => $e->getLine(),
