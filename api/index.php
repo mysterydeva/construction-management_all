@@ -43,28 +43,18 @@ if (!is_dir('/tmp/storage/framework/views')) {
     mkdir('/tmp/storage/framework/views', 0755, true);
 }
 
-// Load Laravel autoloader and bootstrap the application
-require __DIR__ . '/../vendor/autoload.php';
+// Set working directory to Laravel root
+chdir(__DIR__ . '/..');
 
-// Create the Laravel application instance
-$app = require_once __DIR__ . '/../bootstrap/app.php';
-
-// Handle the request through Laravel's HTTP kernel
+// Load Laravel's public/index.php directly
 try {
-    $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-    
-    $response = $kernel->handle(
-        $request = Illuminate\Http\Request::capture()
-    )->send();
-    
-    $kernel->terminate($request, $response);
-    
+    require __DIR__ . '/../public/index.php';
 } catch (Exception $e) {
     // Return error response for debugging
     http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode([
-        'error' => 'Laravel request failed',
+        'error' => 'Laravel bootstrap failed',
         'message' => $e->getMessage(),
         'file' => $e->getFile(),
         'line' => $e->getLine(),
@@ -75,7 +65,7 @@ try {
     http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode([
-        'error' => 'Laravel request error',
+        'error' => 'Laravel bootstrap error',
         'message' => $e->getMessage(),
         'file' => $e->getFile(),
         'line' => $e->getLine(),
