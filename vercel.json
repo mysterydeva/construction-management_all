@@ -7,19 +7,14 @@
   },
   "routes": [
     {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|ico|svg)$",
-      "dest": "/public/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "/api/index.php"
     }
   ],
-  "outputDirectory": "public",
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "APP_URL": "https://construction-management-naxucztg9-mysterydevas-projects.vercel.app",
+    "APP_KEY": "base64:iSg0UaHPigja2vpubkQgEHEIbWJmIF8lv1Ba2rC5VkM=",
     "CACHE_DRIVER": "file",
     "SESSION_DRIVER": "file",
     "QUEUE_CONNECTION": "sync"
