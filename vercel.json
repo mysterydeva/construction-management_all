@@ -1,15 +1,18 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.php": {
-      "runtime": "vercel-php@0.7.1"
+  "builds": [
+    {
+      "src": "api/index.php",
+      "use": "@vercel/php"
     }
-  },
+  ],
   "routes": [
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ],
   "outputDirectory": "public",
+  "installCommand": "composer install --no-dev --optimize-autoloader",
+  "buildCommand": "composer install --no-dev --optimize-autoloader",
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
