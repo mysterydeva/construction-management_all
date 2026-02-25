@@ -23,8 +23,11 @@ Route::post('/logout', [DemoController::class, 'logout'])->name('logout');
 // Unified Multi-Business ERP Routes
 Route::middleware(['web', BusinessTypeMiddleware::class])->group(function () {
     
-    // Main Dashboard
-    Route::get('/', [UnifiedDashboardController::class, 'index'])->name('dashboard.index');
+    // Main Dashboard - Root route redirects to dashboard
+    Route::get('/', function () {
+        return redirect()->route('dashboard.index');
+    })->name('dashboard');
+    
     Route::get('/dashboard', [UnifiedDashboardController::class, 'index'])->name('dashboard.index');
     
     // Projects (All Business Types)
@@ -37,7 +40,7 @@ Route::middleware(['web', BusinessTypeMiddleware::class])->group(function () {
         Route::delete('/{id}', [UnifiedProjectsController::class, 'destroy'])->name('destroy');
     });
     
-    // Inventory (Construction Only)
+    // Inventory (Construction Business Only)
     Route::prefix('inventory')->name('inventory.')->group(function () {
         Route::get('/', [UnifiedInventoryController::class, 'index'])->name('index');
         Route::get('/create', [UnifiedInventoryController::class, 'create'])->name('create');
@@ -47,7 +50,7 @@ Route::middleware(['web', BusinessTypeMiddleware::class])->group(function () {
         Route::delete('/{id}', [UnifiedInventoryController::class, 'destroy'])->name('destroy');
     });
     
-    // Leads (Sales Only)
+    // Leads (Sales Business Only)
     Route::prefix('leads')->name('leads.')->group(function () {
         Route::get('/', [UnifiedLeadsController::class, 'index'])->name('index');
         Route::get('/create', [UnifiedLeadsController::class, 'create'])->name('create');
@@ -57,7 +60,7 @@ Route::middleware(['web', BusinessTypeMiddleware::class])->group(function () {
         Route::delete('/{id}', [UnifiedLeadsController::class, 'destroy'])->name('destroy');
     });
     
-    // Quotations (Sales Only)
+    // Quotations (Sales Business Only)
     Route::prefix('quotations')->name('quotations.')->group(function () {
         Route::get('/', [UnifiedQuotationsController::class, 'index'])->name('index');
         Route::get('/create', [UnifiedQuotationsController::class, 'create'])->name('create');
@@ -77,7 +80,7 @@ Route::middleware(['web', BusinessTypeMiddleware::class])->group(function () {
         Route::delete('/{id}', [UnifiedInvoicesController::class, 'destroy'])->name('destroy');
     });
     
-    // Expenses (All Business Types)
+    // Expenses (Construction & Design Business)
     Route::prefix('expenses')->name('expenses.')->group(function () {
         Route::get('/', [UnifiedExpensesController::class, 'index'])->name('index');
         Route::get('/create', [UnifiedExpensesController::class, 'create'])->name('create');
